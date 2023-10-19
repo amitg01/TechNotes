@@ -8,6 +8,7 @@ const asyncHandler = require("express-async-handler");
 const getAllNotes = asyncHandler(async (req, res) => {
   // Get all notes from MongoDB
   const notes = await Note.find().lean();
+  console.log({ notes });
 
   // If no notes
   if (!notes?.length) {
@@ -20,6 +21,7 @@ const getAllNotes = asyncHandler(async (req, res) => {
   const notesWithUser = await Promise.all(
     notes.map(async (note) => {
       const user = await User.findById(note.user).lean().exec();
+      console.log({ user });
       return { ...note, username: user.username };
     })
   );
